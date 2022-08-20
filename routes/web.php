@@ -1,0 +1,72 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\HomeController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+/*------------------------------------------
+--------------------------------------------
+All Normal Users Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:user'])->group(function () {
+
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
+
+/*------------------------------------------
+--------------------------------------------
+All Super Admin Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:super-admin'])->group(function () {
+
+    Route::get('/super-admin/home', [HomeController::class, 'superAdminHome'])->name('super.admin.home');
+});
+
+/*------------------------------------------
+--------------------------------------------
+All Manager Admin Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:manager-admin'])->group(function () {
+
+    Route::get('/manager-admin/home', [HomeController::class, 'managerAdminHome'])->name('manager.admin.home');
+});
+
+/*------------------------------------------
+--------------------------------------------
+All Owner Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:owner'])->group(function () {
+
+    Route::get('/owner/home', [HomeController::class, 'ownerHome'])->name('owner.home');
+});
+
+/*------------------------------------------
+--------------------------------------------
+All Manager Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:manager'])->group(function () {
+
+    Route::get('/manager/home', [HomeController::class, 'managerHome'])->name('manager.home');
+});
